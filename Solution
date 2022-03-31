@@ -1,0 +1,119 @@
+using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace firstProblemMidleExam
+{
+    internal class Program
+
+    {
+        static void Main(string[] args)
+
+        {
+
+            Dictionary<string, int> matterials = new Dictionary<string, int>() {
+
+                {"shards", 0 },
+                {"motes", 0 },
+                {"fragments", 0 },
+
+            };
+
+            Dictionary<string, int> junk = new Dictionary<string, int>();
+
+            bool isOver = false;
+
+
+            int Shards = 0;
+            int Fragments = 0;
+            int Motes = 0;
+
+            while (isOver != true)
+            {
+                List<string> matt = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                for (int i = 0; i < matt.Count; i += 2)
+                {
+                    string matterial = matt[i + 1].ToLower();
+                    int quantity = int.Parse(matt[i]);
+
+                    if (matterials.ContainsKey(matterial))
+                    {
+                        matterials[matterial] += quantity;
+                        switch (matterial)
+                        {
+                            case "shards":
+                                Shards += quantity;
+                                break;
+                            case "fragments":
+                                Fragments += quantity;
+                                break;
+                            case "motes":
+                                Motes += quantity;
+                                break;
+                        }
+
+                        if (Shards >= 250)
+                        {
+
+                            matterials[matterial] -= 250;
+                            Console.WriteLine("Shadowmourne obtained!");
+                            isOver = true;
+                            break;
+                        }
+                        else if (Fragments >= 250)
+                        {
+                            matterials[matterial] -= 250;
+                            Console.WriteLine("Valanyr obtained!");
+                            isOver = true;
+                            break;
+                        }
+                        else if (Motes >= 250)
+                        {
+                            matterials[matterial] -= 250;
+                            Console.WriteLine("Dragonwrath obtained!");
+                            isOver = true;
+                            break;
+                        }
+
+                    }
+                    else
+                    {
+                        if (!matterials.ContainsKey(matterial))
+                        {
+                            if (junk.ContainsKey(matterial))
+                            {
+                                junk[matterial] += quantity;
+                            }
+                            else
+                            {
+                                junk.Add(matterial, quantity);
+                            }
+                        }
+                    }
+
+
+                }
+
+
+            }
+
+            
+
+            foreach (var item in matterials)
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}");
+            }
+
+            foreach (var item in junk)
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}");
+            }
+
+            
+
+        }
+    }
+}
